@@ -79,9 +79,10 @@ const LoginRegister = ({ onLogin }) => {
     // Redirect to home page after a short delay
     setTimeout(() => {
       if (onLogin) {
-        onLogin();
+        onLogin(user);  // <-- pass the full user, not just a success flag
       }
     }, 1500);
+    
   };
 
   // Handle registration

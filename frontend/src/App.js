@@ -1,59 +1,60 @@
-
 import React, { useState } from 'react';
 import LoginRegister from './LoginRegister';
 import Home from './Home';
 import Upload from './Upload';
 import About from './About';
 import Footer from './Footer';
+import StudentDashboard from './StudentDashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('login');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleNavigation = (page) => {
     setCurrentPage(page);
   };
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setCurrentPage('home');
+  const handleLogin = (user) => {
+    setCurrentUser(user);   // store logged-in user with role
+    setCurrentPage('home'); // default after login
   };
 
   const handleLogout = () => {
-    // Show logout success message
     alert('Logged out successfully!');
-    
-    // Reset state and redirect to login
-    setIsLoggedIn(false);
+    setCurrentUser(null);
     setCurrentPage('login');
   };
 
   const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'login':
-        return <LoginRegister onLogin={handleLogin} />;
-      case 'home':
-        return <Home onNavigate={handleNavigation} onLogout={handleLogout} />;
-      case 'upload':
-        return <Upload onNavigate={handleNavigation} onLogout={handleLogout} />;
-      case 'about':
-        return <About onNavigate={handleNavigation} onLogout={handleLogout} />;
-      default:
-        return <LoginRegister onLogin={handleLogin} />;
+    if (!currentUser) {
+      return <LoginRegister onLogin={handleLogin} />;
+    }
+
+    // ✅ If Teacher logs in
+    if (currentUser.role === 'teacher') {
+      switch (currentPage) {
+        case 'home':
+          return <Home onNavigate={handleNavigation} onLogout={handleLogout} />;
+        case 'upload':
+          return <Upload onNavigate={handleNavigation} onLogout={handleLogout} />;
+        case 'about':
+          return <About onNavigate={handleNavigation} onLogout={handleLogout} />;
+        default:
+          return <Home onNavigate={handleNavigation} onLogout={handleLogout} />;
+      }
+    }
+
+    // ✅ If Student logs in
+    if (currentUser.role === 'student') {
+      return <StudentDashboard user={currentUser} onLogout={handleLogout} />;
     }
   };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {currentPage === 'login' ? (
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {renderCurrentPage()}
-        </div>
-      ) : (
-        <div style={{ flex: 1 }}>
-          {renderCurrentPage()}
-        </div>
-      )}
+      <div style={{ flex: 1 }}>
+        {renderCurrentPage()}
+      </div>
       <Footer />
     </div>
   );
