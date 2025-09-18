@@ -5,6 +5,8 @@ import Upload from './Upload';
 import About from './About';
 import Footer from './Footer';
 import StudentDashboard from './StudentDashboard';
+import UploadSchema from './UploadSchema';
+import TeacherCourses from './TeacherCourses';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('login');
@@ -35,8 +37,12 @@ function App() {
       switch (currentPage) {
         case 'home':
           return <Home onNavigate={handleNavigation} onLogout={handleLogout} />;
+        case 'courses':
+          return <TeacherCourses onNavigate={handleNavigation} onLogout={handleLogout} user={currentUser} />;
         case 'upload':
           return <Upload onNavigate={handleNavigation} onLogout={handleLogout} />;
+        case 'uploadSchema':
+          return <UploadSchema onNavigate={handleNavigation} onLogout={handleLogout} />;
         case 'about':
           return <About onNavigate={handleNavigation} onLogout={handleLogout} />;
         default:

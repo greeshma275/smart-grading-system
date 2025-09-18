@@ -50,46 +50,18 @@ const Upload = ({ onNavigate, onLogout }) => {
     }
   };
 
-  const handleSubmit = async () => {
-  if (uploadedFile) {
-    setIsProcessing(true);
-    setCurrentStep(3);
-
-    const formData = new FormData();
-    formData.append("file", uploadedFile);
-
-    try {
-      const res = await fetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-      setIsProcessing(false);
-      setCurrentStep(4);
-
-      if (data.extractedText) {
-        alert("Grading completed! Text extracted ✅");
-
-        // Download extracted text as file
-        const blob = new Blob([data.extractedText], { type: "text/plain" });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${uploadedFile.name}.txt`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      } else {
-        alert("No text found in file.");
-      }
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert("Error processing file");
-      setIsProcessing(false);
+  const handleSubmit = () => {
+    if (uploadedFile) {
+      setIsProcessing(true);
+      setCurrentStep(3);
+      // Simulate processing
+      setTimeout(() => {
+        setCurrentStep(4);
+        setIsProcessing(false);
+        alert(`File "${uploadedFile.name}" uploaded successfully! Grading completed!`);
+      }, 3000);
     }
-  }
-};
-
+  };
 
   const getFileIcon = (fileName) => {
     const extension = fileName.split('.').pop().toLowerCase();

@@ -59,8 +59,14 @@ const Header = ({ onNavigate, onLogout }) => {
       case 'Home':
         if (onNavigate) onNavigate('home');
         break;
+      case 'Courses':
+        if (onNavigate) onNavigate('courses');
+        break;
       case 'Upload':
         if (onNavigate) onNavigate('upload');
+        break;
+      case 'Upload schema':
+        if (onNavigate) onNavigate('uploadSchema');
         break;
       case 'Logout':
         if (onLogout) onLogout();
@@ -76,7 +82,9 @@ const Header = ({ onNavigate, onLogout }) => {
   const navItems = [
     { name: 'Home', tooltip: 'Go to Home Page' },
     { name: 'About', tooltip: 'Learn About Us' },
+    { name: 'Courses', tooltip: 'Manage and view course notes' },
     { name: 'Upload', tooltip: 'Upload Documents' },
+    { name: 'Upload schema', tooltip: 'Define upload schema' },
     { name: 'Logout', tooltip: 'Sign Out' }
   ];
 
